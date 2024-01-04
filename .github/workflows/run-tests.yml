@@ -49,6 +49,7 @@ jobs:
           ssh -o StrictHostKeyCHecking=no -i ~/.ssh/private_key ${USERNAME}@${HOST} '
             export NVM_DIR=~/.nvm &&
             source ~/.nvm/nvm.sh &&
+            export PATH=/home/ubuntu/.meteor:$PATH &&
             cd srv/changeplan &&
             npm i &&
             meteor run
