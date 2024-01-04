@@ -15,5 +15,5 @@ jobs:
 
       - run: npm i -g meteor
       - run: export PATH=/home/runner/.meteor:$PATH
-      - run: npm ci
+      - run: npm i
       - run: npm run test
