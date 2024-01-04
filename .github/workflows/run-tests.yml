@@ -16,6 +16,7 @@ jobs:
 
       - name: Setup Meteor.js environment
         uses: meteorengineer/setup-meteor@v1.0.8
+      - run: ls -la
       - run: meteor npm i
       - run: meteor npm test
 
@@ -32,7 +33,7 @@ jobs:
         run: node --version
       - run: ls -la
       - run: echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
-      - run: rsync -avz -e "ssh -o StrictHostKeyChecking=no -i private_key ${USERNAME}@${HOST}" ${USERNAME}@${HOST}:/home/${USERNAME}/srv/
+      - run: rsync -avz -e "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null" --progress . ${USERNAME}@${HOST}:/home/${USERNAME}/srv/
       - run: ssh -o StrictHostKeyChecking=no -i private_key ${USERNAME}@${HOST} '
 
           npm ci
