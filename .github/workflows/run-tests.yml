@@ -42,6 +42,7 @@ jobs:
           eval $(ssh-agent -s)
           ssh-add ~/.ssh/private_key
           rsync -avz -e "ssh -o StrictHostKeyCHecking=no -o UserKnownHostsFile=/dev/null" --progress . ${USERNAME}@${HOST}:/home/${USERNAME}/srv/changeplan
-          cd /home/${USERNAME}/srv/changeplan
+          ssh ${USERNAME}@${HOST}
+          cd srv/changeplan
           npm i
           meteor run
