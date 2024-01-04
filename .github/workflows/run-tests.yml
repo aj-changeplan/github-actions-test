@@ -14,5 +14,6 @@ jobs:
           node-version: "14.x"
 
       - run: npm i -g meteor
-      - run: npm i
+      - run: export PATH=/home/runner/.meteor:$PATH
+      - run: npm ci
       - run: npm run test
