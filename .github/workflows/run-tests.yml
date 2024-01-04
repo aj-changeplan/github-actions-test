@@ -44,5 +44,4 @@ jobs:
           rsync -avz -e "ssh -o StrictHostKeyCHecking=no -o UserKnownHostsFile=/dev/null" --progress . ${USERNAME}@${HOST}:/home/${USERNAME}/srv/changeplan
           cd srv/changeplan
           npm i
-          meteor build --platforms=web.browser
-          meteor --production
+          meteor run
