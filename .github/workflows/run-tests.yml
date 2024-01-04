@@ -30,14 +30,22 @@ jobs:
     steps:
       - name: Prepare Project Files
         uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
 
-      - name: Set up SSH Key
-        run: node --version
-      - run: ls -la
-      - run: mkdir ~/.ssh
-      - run: echo "$PRIVATE_KEY" > ~/.ssh/private_key && chmod 600 ~/.ssh/private_key
-      - run: ssh -o StrictHostKeyChecking=no -i ~/.ssh/private_key ${USERNAME}@${HOST} "touch sample.txt"
+      - name: Setup Node
+        uses: actions/setup-node@v2
 
-        name: Sync files
-      - run: rsync -avz -e "ssh -o StrictHostKeyCHecking=no -o UserKnownHostsFile=/dev/null" --progress . ubuntu@13.229.94.130:/home/ubuntu/srv
+      - name: Copy Files via ssh
+        uses: garygrossgarten/github-action-scp@v0.8.0
+        with:
+          local: .
+          dotfiles: true
+          remote: srv/
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          privateKey: ${{ secrets.KEY }}
+      # - run: mkdir ~/home/runner/.ssh
+      # - run: echo "$PRIVATE_KEY" > ~/.ssh/private_key && chmod 600 ~/.ssh/private_key
+      # - run: ssh -o StrictHostKeyChecking=no -i ~/.ssh/private_key ${USERNAME}@${HOST} "touch sample.txt"
+
+      #   name: Sync files
+      # - run: rsync -avz -e "ssh -o StrictHostKeyCHecking=no -o UserKnownHostsFile=/dev/null" --progress . ubuntu@13.229.94.130:/home/ubuntu/srv
