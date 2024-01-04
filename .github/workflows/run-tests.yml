@@ -28,7 +28,7 @@ jobs:
       PRIVATE_KEY: ${{ secrets.KEY  }}
       HOST : ${{ secrets.HOST  }}
       USERNAME : ${{ secrets.USERNAME  }}
-      PORT : ${{ secrets.PORT  }}
+      PORT : ${{ vars.PORT  }}
 
     steps:
       - name: Prepare Project Files
