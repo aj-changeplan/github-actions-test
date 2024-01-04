@@ -5,7 +5,7 @@ on:
     branches: [main, develop]
 
 jobs:
-  build:
+  Test-Github-Actions:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -13,7 +13,7 @@ jobs:
         with:
           node-version: "14.x"
 
-      - run: npm i -g meteor
-      - run: export PATH=/home/runner/.meteor:$PATH
-      - run: npm i
-      - run: npm run test
+      - name: Setup Meteor.js environment
+        uses: meteorengineer/setup-meteor@v1.0.8
+      - run: meteor npm i
+      - run: meteor npm test
