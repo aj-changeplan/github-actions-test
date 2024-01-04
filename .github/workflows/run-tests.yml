@@ -28,24 +28,23 @@ jobs:
       PRIVATE_KEY: ${{ secrets.KEY  }}
       HOST : ${{ secrets.HOST  }}
       USERNAME : ${{ secrets.USERNAME  }}
+      PORT : ${{ secrets.PORT  }}
 
     steps:
       - name: Prepare Project Files
         uses: actions/checkout@v2
 
       - name: Copy Files via ssh
-        run: mkdir ~/.ssh
-      - run: |
+        run: |
+          mkdir ~/.ssh
           echo "$PRIVATE_KEY" > ~/.ssh/private_key
           chmod 600 ~/.ssh/private_key
-      - run: |
           eval $(ssh-agent -s)
           ssh-add ~/.ssh/private_key
           rsync -avz -e "ssh -o StrictHostKeyCHecking=no -o UserKnownHostsFile=/dev/null" --progress . ${USERNAME}@${HOST}:/home/${USERNAME}/srv/changeplan
           
       - name: Run project
         shell: bash
-          # pm2 start "meteor run" --name=changeplan_dev
         run: |
           ssh -o StrictHostKeyCHecking=no -i ~/.ssh/private_key ${USERNAME}@${HOST} '
             export NVM_DIR=~/.nvm &&
@@ -53,5 +52,5 @@ jobs:
             export PATH=/home/ubuntu/.meteor:$PATH &&
             cd srv/changeplan &&
             npm i &&
-            pm2 restart 1
+            pm2 start "meteor run --port ${PORT}" --name=changeplan_dev
           '     
