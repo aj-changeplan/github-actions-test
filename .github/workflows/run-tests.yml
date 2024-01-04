@@ -24,17 +24,18 @@ jobs:
     needs: Test
     env:
       PRIVATE_KEY: ${{ secrets.KEY  }}
-      HOSTNAME : ${{ secrets.HOST  }}
-      USER_NAME : ${{ secrets.USERNAME  }}
+      HOST : ${{ secrets.HOST  }}
+      USERNAME : ${{ secrets.USERNAME  }}
 
     steps:
       - name: Set up SSH Key
         run: node --version
       - run: ls -la
+      - run: rsync -avz . ${USERNAME}@${HOST}:/home/${USERNAME}/srv/
       - run: echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
-      - run: ssh -o StrictHostKeyChecking=no -i private_key ${USER_NAME}@${HOSTNAME} '
+      - run: ssh -o StrictHostKeyChecking=no -i private_key ${USERNAME}@${HOST} '
 
-          cd /home/ubuntu &&
-          touch tttt.txt
+          npm ci
+          meteor run
 
           '
