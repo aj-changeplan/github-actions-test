@@ -44,7 +44,8 @@ jobs:
           rsync -avz -e "ssh -o StrictHostKeyCHecking=no -o UserKnownHostsFile=/dev/null" --progress . ${USERNAME}@${HOST}:/home/${USERNAME}/srv/changeplan
           
       - name: Run project
+        shell: bash
         run: |
           ssh -o StrictHostKeyCHecking=no -i ~/.ssh/private_key ${USERNAME}@${HOST} '
-            cd srv/changeplan && source ~/.bashrc && npm i && meteor run
+            cd srv/changeplan && npm i && meteor run
           '      
