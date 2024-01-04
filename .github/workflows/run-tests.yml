@@ -16,7 +16,6 @@ jobs:
 
       - name: Setup Meteor.js environment
         uses: meteorengineer/setup-meteor@v1.0.8
-      - run: ls -la
       - run: meteor npm i
       - run: meteor npm test
 
@@ -29,14 +28,21 @@ jobs:
       USERNAME : ${{ secrets.USERNAME  }}
 
     steps:
+      - name: Prepare Project Files
+        uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+
       - name: Set up SSH Key
         run: node --version
       - run: ls -la
-      - run: echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
+      - run: mkdir ~/.ssh
+      - run: echo "$PRIVATE_KEY" > ~/.ssh/private_key && chmod 600 ~/.ssh/private_key
       - run: eval "$(ssh-agent -s)"
-      - run: ssh-add private_key
+      - run: ssh-add ~/.ssh/private_key
+
+        name: Sync files
       - run: rsync -avz -e "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null" --progress . ${USERNAME}@${HOST}:/home/${USERNAME}/srv/
-      - run: ssh -o StrictHostKeyChecking=no -i private_key ${USERNAME}@${HOST} '
+      - run: ssh -o StrictHostKeyChecking=no -i ~/.ssh/private_key ${USERNAME}@${HOST} '
           npm ci
           meteor run
           '
