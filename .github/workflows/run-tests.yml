@@ -52,5 +52,5 @@ jobs:
             export PATH=/home/ubuntu/.meteor:$PATH &&
             cd srv/changeplan &&
             npm i &&
-            pm2 start "meteor run --port ${PORT}" --name=changeplan_dev
+            pm2 start "meteor run --port ${{ vars.PORT  }}" --name=changeplan_dev
           '     
