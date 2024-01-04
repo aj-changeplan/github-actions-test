@@ -31,6 +31,9 @@ jobs:
       PORT : ${{ vars.PORT  }}
 
     steps:
+      - name: List Variables
+        run: env
+
       - name: Prepare Project Files
         uses: actions/checkout@v2
 
@@ -52,5 +55,5 @@ jobs:
             export PATH=/home/ubuntu/.meteor:$PATH &&
             cd srv/changeplan &&
             npm i &&
-            pm2 start "meteor run --port ${{ vars.PORT  }}" --name=changeplan_dev
+            pm2 restart 0 --update-env
           '     
