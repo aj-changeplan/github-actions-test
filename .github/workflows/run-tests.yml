@@ -46,5 +46,5 @@ jobs:
       - name: Run project
         run: |
           ssh -o StrictHostKeyCHecking=no -i ~/.ssh/private_key ${USERNAME}@${HOST} '
-            touch test.txt
+            cd srv/changeplan && source ~/.bashrc && npm i && meteor run
           '      
