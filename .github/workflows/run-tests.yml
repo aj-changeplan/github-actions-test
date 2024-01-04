@@ -46,6 +46,6 @@ jobs:
       - name: Run project
         shell: bash
         run: |
-          ssh -o StrictHostKeyCHecking=no -i ~/.ssh/private_key ${USERNAME}@${HOST} '
+          ssh -o StrictHostKeyCHecking=no ${USERNAME}@${HOST} '
             cd srv/changeplan && npm i && meteor run
           '      
