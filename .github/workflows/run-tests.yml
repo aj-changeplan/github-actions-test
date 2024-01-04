@@ -46,8 +46,10 @@ jobs:
       - name: Run project
         shell: bash
         run: |
-          eval $(ssh-agent -s)
-          ssh-add ~/.ssh/private_key
-          ssh -o StrictHostKeyCHecking=no ${USERNAME}@${HOST} '
-            cd srv/changeplan && npm i && meteor run
+          ssh -o StrictHostKeyCHecking=no -i ~/.ssh/private_key ${USERNAME}@${HOST} '
+            export NVM_DIR=~/.nvm &&
+            source ~/.nvm/nvm.sh &&
+            cd srv/changeplan &&
+            npm i &&
+            meteor run
           '      
