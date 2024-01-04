@@ -1,11 +1,12 @@
-name: Run test
+name: Deployment
 
 on:
   push:
     branches: [main, develop]
 
 jobs:
-  Test-Github-Actions:
+
+  Test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -17,3 +18,21 @@ jobs:
         uses: meteorengineer/setup-meteor@v1.0.8
       - run: meteor npm i
       - run: meteor npm test
+
+  Deployment:
+    runs-on: ubuntu-latest
+    env:
+      PRIVATE_KEY: ${{ secrets.KEY  }}
+      HOSTNAME : ${{ secrets.HOST  }}
+      USER_NAME : ${{ secrets.USERNAME  }}
+
+    steps:
+      - name: Set up SSH Key
+        run: node --version
+      - run: echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
+      - run: ssh -o StrictHostKeyChecking=no -i private_key ${USER_NAME}@${HOSTNAME} '
+
+          cd /home/ubuntu &&
+          touch tttt.txt
+
+          '
